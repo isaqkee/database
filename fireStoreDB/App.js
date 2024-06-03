@@ -1,8 +1,8 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { bancoExterno } from './firebaseConnection';
 import { useEffect, useState } from 'react';
-import { doc, getDoc, onSnapshot } from 'firebase/firestore';
+import { doc, getDoc, onSnapshot, setDoc, addDoc, collection } from 'firebase/firestore';
 
 export default function App() {
 
@@ -31,10 +31,32 @@ export default function App() {
 
   }, [])
 
+  async function addBancoExterno() {
+    await setDoc(doc(bancoExterno, "aparelhos", "3"), {
+      TV: "Telefunken",
+      Geladeira: "Continental",
+      Fogão: "Consul"
+    })
+  }
+
+  async function addBancoExterno2() {
+    await addDoc(collection(bancoExterno, "aparelhos"), {
+      TV: "AOC",
+      Geladeira: "Dako",
+      Fogão: "Dako"
+    })
+  }
+
 
   return (
     <View style={styles.container}>
       <Text style={{fontSize:25}}>Informação:{nome}, {nome2} </Text>
+      <TouchableOpacity style={{ backgroundColor:"#F50" }} onPress={addBancoExterno}>
+        <Text style={{ fontSize: 20, paddingHorizontal:15 }}>Adicionar</Text>
+      </TouchableOpacity>
+      <TouchableOpacity style={{ backgroundColor: "#AFF" }} onPress={addBancoExterno2}>
+        <Text style={{ fontSize: 20, paddingHorizontal: 15 }}>Adicionar</Text>
+      </TouchableOpacity>
       <StatusBar style="auto" />
     </View>
   );
